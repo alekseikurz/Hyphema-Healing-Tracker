@@ -1,0 +1,141 @@
+<!-- 
+    This HTML file represents the index (homepage) of the application.
+    It introduces the platform and its features, and provides login/registration options for users.
+-->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <title>HyphemaTracker</title>
+</head>
+<body>
+    
+    <!-- Include header and navigation fragments -->
+    <div th:replace="~{fragments/header :: header}"></div>
+    <div th:replace="~{fragments/nav :: nav}"></div>
+    
+    <!-- Main content of the homepage -->
+    <div class="content" style="font-family: Arial, sans-serif; line-height: 1.6;">
+
+        <!-- Title section -->
+        <div style="padding: 20px 0; margin: 0;">
+            <h1 style="color: #2F6B2F; text-align: center; margin: 0;">
+                Willkommen auf der Plattform zur Hyphema-Überwachung!
+            </h1>
+        </div>
+
+        <!-- Introductory text -->
+        <p>
+            Diese Webseite bietet eine innovative und benutzerfreundliche Lösung für Patienten, die an Hyphema leiden. 
+            Hier können Sie den Heilungsverlauf Ihrer Augen bequem dokumentieren und Fortschritte anschaulich verfolgen.
+        </p>
+
+        <!-- Section: What is Hyphema? -->
+        <h2 style="color: #2F6B2F;">Was ist Hyphema?</h2>
+        <p>
+            Hyphema bezeichnet eine Blutansammlung in der Vorderkammer des Auges, die zwischen der Hornhaut und der Iris liegt. 
+            Die häufigste Ursache für Hyphema ist ein stumpfes oder penetrierendes Trauma, etwa durch einen Schlag, Sturz oder einen Unfall. 
+            Hyphema kann auch durch bestimmte Erkrankungen, wie Blutgerinnungsstörungen, Gefäßerkrankungen oder seltene Komplikationen nach einer Augenoperation, verursacht werden.
+        </p>
+        <p>
+            Ein Hyphema birgt ernstzunehmende Risiken, darunter ein erhöhter Augeninnendruck (Glaukom), der durch die Behinderung des Kammerwasserabflusses entstehen kann, oder dauerhafte Sehstörungen durch Blutreste oder Schäden an der Iris und Hornhaut. 
+            Zudem besteht die Gefahr eines Rezidivs, wenn die Verletzung nicht vollständig verheilt. 
+            Abhängig vom Schweregrad der Verletzung reicht die Behandlung von Schonung und medikamentöser Therapie bis hin zu operativen Eingriffen. 
+            Eine regelmäßige Überwachung des Heilungsverlaufs ist essenziell, um Komplikationen zu vermeiden und die Genesung zu fördern.
+        </p>
+
+        <!-- Section: Features and images -->
+        <div style="display: flex; align-items: flex-start; gap: 20px;">
+
+            <!-- Left column: Features -->
+            <div style="flex: 2;">
+                <h2 style="color: #2F6B2F;">Entdecken Sie die Funktionen der Plattform</h2>
+                <ol style="color: #2F6B2F; font-weight: bold;">
+                    <li>Benutzerregistrierung und persönliches Profil</li>
+                    <p style="color: black; font-weight: normal;">Erstellen Sie Ihr Profil und verwalten Sie alle Daten rund um Ihre Augenverletzungen. Ihre Informationen sind jederzeit sicher abrufbar.</p>
+
+                    <li>Hyphema hinzufügen und dokumentieren</li>
+                    <p style="color: black; font-weight: normal;">Fügen Sie eine Hyphema-Verletzung hinzu und speichern Sie dazugehörige Diagnosen.</p>
+
+                    <li>Fotos hochladen und analysieren</li>
+                    <p style="color: black; font-weight: normal;">Laden Sie Fotos Ihres Auges hoch, um den Zustand zu dokumentieren. Unser System analysiert die Bilder automatisch und berechnet den prozentualen Anteil des Hyphema an der Fläche der Iris und Pupille. Sie können für jedes Auge (links oder rechts) separate Daten hinzufügen und die Aufnahmen mit einem Datum versehen.</p>
+
+                    <li>Fortschritte im Diagramm verfolgen</li>
+                    <p style="color: black; font-weight: normal;">Ein interaktives Diagramm zeigt Ihre Heilung über die Zeit.</p>
+                </ol>
+            </div>
+
+            <!-- Right column: Images -->
+            <div style="flex: 1; display: flex; flex-direction: column; gap: 20px;">
+
+                <!-- First row: Two images -->
+                <div style="display: flex; justify-content: space-between; gap: 20px;">
+                    <div style="flex: 1; text-align: center;">
+                        <img src="/illustrations/image1.jpg" alt="Illustration 1" style="width: 100%; height: auto;">
+                        <p>Auge mit Hyphema</p>
+                    </div>
+                    <div style="flex: 1; text-align: center;">
+                        <img src="/illustrations/image2.jpg" alt="Illustration 2" style="width: 100%; height: auto;">
+                        <p>Analysiertes Foto mit dem prozentualen Anteil des Hyphemas an der Fläche von Iris und Pupille</p>
+                    </div>
+                </div>
+
+                <!-- Second row: Full-width image -->
+                <div style="text-align: center;">
+                    <img src="/illustrations/image3.JPG" alt="Illustration 3" style="width: 100%; height: auto;">
+                    <p>Verlauf der Fortschritte im Diagramm visualisieren</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login form (hidden initially) -->
+    <div id="login-form" class="form-popup" style="display:none;">
+        <form th:action="@{/login}" method="post">
+            <label for="username">Benutzername:</label>
+            <input type="text" name="username" required>
+            
+            <label for="password">Passwort:</label>
+            <input type="password" name="password" required>
+
+            <!-- Buttons for form actions -->
+            <div class="button-container">
+                <button type="submit">Einloggen</button>
+                <button type="button" onclick="hideForms()">Schließen</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Registration form -->
+    <div id="register-form" class="form-popup" style="display:none;">
+        <form th:action="@{/register}" method="post">    
+            <label for="login">Benutzername:</label>
+            <input type="text" name="login" required>
+            <label for="password">Passwort:</label>
+            <input type="password" name="password" required>
+            <div class="button-container">
+                <button type="submit">Registrieren</button>
+                <button type="button" onclick="hideForms()">Schließen</button>
+            </div>
+        </form>
+    </div>
+    
+    <script>
+        // Show/hide login and registration forms
+        function showLoginForm() {
+            document.getElementById('login-form').style.display = 'block';
+            document.getElementById('register-form').style.display = 'none';
+        }
+
+        function showRegisterForm() {
+            document.getElementById('register-form').style.display = 'block';
+            document.getElementById('login-form').style.display = 'none';
+        }
+
+        function hideForms() {
+            document.getElementById('login-form').style.display = 'none';
+            document.getElementById('register-form').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

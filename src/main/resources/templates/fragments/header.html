@@ -1,0 +1,27 @@
+
+<!-- 
+    This is a reusable header fragment for the webpage.
+    It includes the site title, login/register buttons for anonymous users, 
+    and logout functionality for logged-in users.
+-->
+<div class="header" th:fragment="header">
+    <!-- Left section of the header: Displays the site title -->
+    <div class="header-left">
+        <a href="/" class="site-title">Ihr Begleiter bei der Hyphema-Heilung</a>
+    </div>
+    <!-- Right section of the header: User authentication actions -->
+    <div class="header-right">
+        <!-- Displayed when the user is not authenticated (anonymous) -->
+        <div th:if="${#authentication == null}">
+            <button onclick="showLoginForm()">Einloggen</button>
+            <button onclick="showRegisterForm()">Registrieren</button>
+        </div>
+        <!-- Displayed when the user is authenticated -->
+        <div th:if="${#authentication != null and #authentication.principal != null}">
+            <span th:text="${#authentication.principal.username}"></span>
+            <form th:action="@{/logout}" method="post" style="display: inline;">
+                <button type="submit">Ausloggen</button>
+            </form>
+        </div>
+    </div>
+</div>

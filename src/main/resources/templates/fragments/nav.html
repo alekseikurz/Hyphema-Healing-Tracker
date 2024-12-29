@@ -1,0 +1,24 @@
+<!-- 
+    This is a reusable navigation (nav) fragment for the webpage.
+    It dynamically displays links based on the current page (URI) 
+    and the user's authentication status.
+-->
+<div class="nav" th:fragment="nav">
+    <ul>
+        <!-- 
+            Display "Startseite" link only when the current page 
+            is not the homepage (to avoid redundancy).
+        -->
+        <li th:if="${currentUri != '/'}">
+            <a href="/">Startseite</a>
+        </li>
+        <!-- 
+            Display "Ihre Hyphema-Fortschrittsverfolgung" link only when:
+            - The user is on the homepage (currentUri == '/').
+            - The user is authenticated (#authentication is not null).
+        -->
+        <li th:if="${currentUri == '/' and #authentication != null}">
+            <a href="/dashboard">Ihre Hyphema-Fortschrittsverfolgung</a>
+        </li>
+    </ul>
+</div>

@@ -1,0 +1,577 @@
+<!-- This HTML file represents a personalized dashboard -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Dashboard</title>
+</head>
+<body>
+    <!-- Inserting header and navigation using Thymeleaf -->
+    <div th:replace="~{fragments/header :: header}"></div>
+    <div th:replace="~{fragments/nav :: nav}"></div>
+
+    <!-- Main content of the dashboard -->
+    <div class="content">
+        <!-- Dashboard title -->
+        <h1 style="color: #2F6B2F;">Hyphema-Fortschrittsverfolgung</h1>
+
+        <!-- Section: Requirements-->
+        <div style="display: flex; gap: 40px; margin-top: 20px; margin-bottom: 40px; align-items: flex-start;">
+
+            <!-- Photo-taking requirements -->
+            <div style="flex: 1;">
+                <h2 style="color: #2F6B2F; margin-bottom: 10px;">Bitte beachten Sie die folgenden Anforderungen:</h2>
+                <ul style="line-height: 1.8; font-size: 16px; margin: 0; padding-left: 20px;">
+                    <li>Machen Sie das Foto früh morgens nach dem Schlaf oder nach mehreren Stunden Ruhe in sitzender Position. Das Blut sollte sich im unteren Bereich der vorderen Augenkammer abgesetzt haben.</li>
+                    <li>Das Foto sollte ausschließlich Ihr Auge zeigen. Vermeiden Sie Ablenkungen durch andere Objekte oder Bereiche.</li>
+                    <li>Achten Sie darauf, dass Iris und Pupille vollständig sichtbar sind, damit eine genaue Analyse erfolgen kann.</li>
+                    <li>Verwenden Sie keine Fotos mit schlechter Bildqualität, da diese die Ergebnisse verfälschen können.</li>
+                    <li>Vermeiden Sie Fotos mit übermäßig hoher Qualität, bei denen Reflexionen von Objekten auf der Augenoberfläche dominieren. Solche Reflexionen beeinträchtigen die Analysegenauigkeit.</li>
+                </ul>
+            </div>
+
+            <!-- Examples of suitable and unsuitable photos -->
+            <div style="flex: 1; display: flex; gap: 20px; justify-content: space-between;">
+                <!-- Example: Suitable photo -->
+                <div style="text-align: center; flex: 1;">
+                    <img src="/illustrations/image4.jpg" alt="Hyphema Beispielbild 1" style="height: 200px; width: auto; object-fit: cover; border: 1px solid #ccc;">
+                    <p style="margin-top: 8px; color: #555;">Geeignetes Foto für die Analyse</p>
+                </div>
+                <!-- Example: Unsuitable photo -->
+                <div style="text-align: center; flex: 1;">
+                    <img src="/illustrations/image5.jpg" alt="Hyphema Beispielbild 2" style="height: 200px; width: auto; object-fit: cover; border: 1px solid #ccc;">
+                    <p style="margin-top: 8px; color: #555;">Ungeeignetes Foto: Blut ist gleichmäßig in der Vorderkammer des Auges verteilt</p>
+                </div>
+            </div>
+        </div>
+    
+        <!-- Accordion: Diagnosis and analysis options -->
+        <!-- Section: View diagnoses -->
+        <div class="accordion">
+            <!-- Accordion header -->
+            <div class="accordion-header" onclick="toggleAccordion('injury-list-section')">
+                <span>Diagnosen anzeigen</span>
+                <span class="accordion-arrow">▼</span>
+            </div>
+            <!-- Content: List of diagnoses -->
+            <div id="injury-list-section" class="accordion-content">
+                <ul id="injury-list">
+                    <!-- Dynamically loaded diagnosis items -->
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Section: Add a new diagnosis -->
+        <div class="accordion">
+            <div class="accordion-header" onclick="toggleAccordion('add-injury-section')">
+                <span>Neue Diagnose hinzufügen</span>
+                <span class="accordion-arrow">▼</span>
+            </div>
+            <div id="add-injury-section" class="accordion-content">
+                <!-- Form to add a new diagnosis -->
+                <textarea id="injury-diagnosis" placeholder="Geben Sie hier die Diagnose ein..." rows="4" cols="50"></textarea><br>
+                <button id="add-injury" onclick="addInjury()">Diagnose anlegen</button>
+                <p id="add-injury-status" style="color: red;"></p>
+            </div>
+        </div>
+
+
+        <!-- Section: Hyphema analysis -->
+        <div class="accordion">
+            <div class="accordion-header" onclick="toggleAccordion('analysis-section', true)">
+                <span>Hyphäma Analyse</span>
+                <span class="accordion-arrow">▼</span>
+            </div>
+            <!-- Steps for analysis -->
+            <div id="analysis-section" class="accordion-content">
+                <!-- Injury selection -->
+                <h3>1. Diagnose auswählen</h3>
+                <div id="radio-injuries"></div>
+
+                <!-- Selection of the eye -->
+                <h3>2. Auge auswählen</h3>
+                <div>
+                    <input type="radio" id="left-eye" name="eye" value="LEFT">
+                    <label for="left-eye">Linkes Auge</label>
+                    <input type="radio" id="right-eye" name="eye" value="RIGHT">
+                    <label for="right-eye">Rechtes Auge</label>
+                </div>
+
+                <!-- Selection of the date -->
+                <h3>3. Datum auswählen</h3>
+                <input type="date" id="analysis-date">
+
+                <!-- Foto-Upload -->
+                <h3>4. Foto hochladen</h3>
+                <input type="file" id="upload-photo" accept="image/*">
+                <p id="upload-status" style="color: red;"></p>
+
+                <!-- Start calculation -->
+                <h3>5. Berechnung starten</h3>
+                <button id="start-analysis" onclick="startAnalysis()">Berechnung starten</button>
+                <div id="loading-bar" style="display: none;">Berechnung läuft...</div>
+
+                <!-- Show result -->
+                <h3>6. Ergebnis</h3>
+                <div id="result">
+                    <img id="processed-image" src="" alt="Bearbeitetes Bild" style="display: none; max-width: 100%;">
+                </div>
+                <button id="save-result" style="display: none;" onclick="saveResult()">Ergebnis speichern</button>
+            </div>
+        </div>
+
+        <!-- Section: View results -->
+        <div class="accordion">
+            <div class="accordion-header" onclick="toggleAccordionResults('results-section', true)">
+                <span>Ergebnisse anzeigen</span>
+                <span class="accordion-arrow">▼</span>
+            </div>
+            <div id="results-section" class="accordion-content">
+                <!-- Injury selection -->
+                <h3>1. Diagnose auswählen</h3>
+                <div id="diagnosis-list">
+                    <!-- Dynamically loaded diagnoses -->
+                </div>
+
+                <!-- Selection of the eye -->
+                <h3>2. Auge auswählen</h3>
+                <div>
+                    <input type="radio" id="left-eye-results" name="eye-results" value="LEFT">
+                    <label for="left-eye-results">Linkes Auge</label>
+                    <input type="radio" id="right-eye-results" name="eye-results" value="RIGHT">
+                    <label for="right-eye-results">Rechtes Auge</label>
+                </div>
+
+                <!-- Button to load the results -->
+                <h3>3. Ergebnisse anzeigen</h3>
+                <button id="load-results" onclick="loadResults()">Ergebnisse zeigen</button>
+                
+                <!-- Area for the diagram  -->
+                <h3>4. Diagramm</h3>
+                <div style="width: 100%; height: 400px;">
+                    <canvas id="results-chart"></canvas>
+                </div>
+                
+            </div>
+            
+        </div>
+
+    </div>    
+
+    </div>
+
+
+    <!-- JavaScript -->
+    <script>
+
+        /**
+         * Toggles the display state of an accordion section.
+         * @param {string} sectionId - The ID of the section to toggle.
+         * @param {boolean} [loadInjuries=false] - Whether to fetch injuries data if the section is expanded.
+         */
+        function toggleAccordion(sectionId, loadInjuries = false) {
+            const section = document.getElementById(sectionId); // The section to toggle.
+            const header = section.previousElementSibling; // The header of the current section.
+
+            // Toggle visibility of the current section.
+            const isActive = section.classList.contains('active');
+            section.classList.toggle('active', !isActive);
+            header.classList.toggle('active', !isActive);
+
+            // Update the arrow animation to indicate expanded or collapsed state.
+            const arrow = header.querySelector('.accordion-arrow');
+            arrow.textContent = isActive ? '▼' : '▲';
+
+            // If the section is expanded and requires injuries data, fetch it.
+            if (!isActive && (sectionId === 'injury-list-section' || loadInjuries)) {
+                fetchInjuries();
+            }
+        }
+    </script>
+
+    <script>
+        /**
+         * Toggles the display state of the "View Results" accordion section.
+         * @param {string} sectionId - The ID of the section to toggle.
+         * @param {boolean} [loadInjuries=false] - Whether to fetch injuries data if the section is expanded.
+         */
+        function toggleAccordionResults(sectionId, loadInjuries = false) {
+            const section = document.getElementById(sectionId); // The section to toggle.
+            const header = section.previousElementSibling; // The header of the current section.
+
+            // Toggle visibility of the current section.
+            const isActive = section.classList.contains('active');
+            section.classList.toggle('active', !isActive);
+            header.classList.toggle('active', !isActive);
+
+            // Update the arrow animation to indicate expanded or collapsed state.
+            const arrow = header.querySelector('.accordion-arrow');
+            arrow.textContent = isActive ? '▼' : '▲';
+
+            // If the section is expanded and requires injuries data, fetch it.
+            if (!isActive && (sectionId === 'injury-list-section' || loadInjuries)) {
+                fetchInjuriesResults();
+            }
+        }
+    </script>
+
+    <script>
+        // Stores the patient's ID, dynamically injected into the script.
+        const patientId = "[[${patientId}]]";
+    </script>
+    
+    <script>
+
+        /**
+         * Fetches and displays injuries for the "View Results" section.
+         */
+        async function fetchInjuriesResults() {
+            const radioContainer = document.getElementById('diagnosis-list'); // Container for radio buttons in the "View Results" section.
+            const injuryList = document.getElementById('injury-list'); // List for the accordion content.
+            radioContainer.innerHTML = '<p>Lädt...</p>'; // Display a loading message.
+
+            try {
+                // Fetch injuries from the API.
+                const response = await fetch(`/api/${patientId}/injuries`);
+                if (response.ok) {
+                    const injuries = await response.json();
+
+                    if (injuries.length > 0) {
+                        // Display injuries in the accordion list.
+                        injuryList.innerHTML = injuries
+                            .map(injury => `<li>ID: ${injury.id}, Diagnosis: ${injury.diagnosis}</li>`)
+                            .join('');
+
+                        // Display injuries as radio buttons in the "View Results" section.
+                        radioContainer.innerHTML = injuries
+                            .map(
+                                injury => `
+                                <div>
+                                    <input type="radio" id="injury-results-${injury.id}" name="injury-results" value="${injury.id}">
+                                    <label for="injury-results-${injury.id}">${injury.diagnosis}</label>
+                                </div>
+                            `
+                            )
+                            .join('');
+                    } else {
+                        const noInjuriesMessage = '<p>Keine Diagnosen gefunden</p>';
+                        injuryList.innerHTML = '<li>Keine Diagnosen gefunden</li>';
+                        radioContainer.innerHTML = noInjuriesMessage;
+                    }
+                } else if (response.status === 204) {
+                    const noInjuriesMessage = '<p>Keine Diagnosen gefunden</p>';
+                    injuryList.innerHTML = '<li>Keine Diagnosen gefunden</li>';
+                    radioContainer.innerHTML = noInjuriesMessage;
+                } else {
+                    const errorMessage = '<p>Fehler beim Abrufen der Diagnosen</p>';
+                    injuryList.innerHTML = '<li>Fehler beim Abrufen der Diagnosen</li>';
+                    radioContainer.innerHTML = errorMessage;
+                }
+            } catch (error) {
+                console.error('Fehler beim Abrufen der Diagnosen:', error);
+                const errorMessage = '<p>Fehler beim Abrufen der Diagnosen</p>';
+                injuryList.innerHTML = '<li>Fehler beim Abrufen der Diagnosen</li>';
+                radioContainer.innerHTML = errorMessage;
+            }
+        }
+    </script>
+
+    <script>
+        /**
+         * Fetches and displays injuries for the "Hyphema Analysis" section.
+         */
+        async function fetchInjuries() {
+            const radioContainer = document.getElementById('radio-injuries'); // Container for radio buttons in the "Hyphema Analysis" section.
+            const injuryList = document.getElementById('injury-list'); // List for the accordion content.
+            radioContainer.innerHTML = '<p>Lädt...</p>'; // Display a loading message.
+
+            try {
+                // Fetch injuries from the API.
+                const response = await fetch(`/api/${patientId}/injuries`);
+                if (response.ok) {
+                    const injuries = await response.json();
+
+                    if (injuries.length > 0) {
+                        // Display injuries in the accordion list.
+                        injuryList.innerHTML = injuries
+                            .map(injury => `<li>ID: ${injury.id}, Diagnosis: ${injury.diagnosis}</li>`)
+                            .join('');
+
+                        // Display injuries as radio buttons in the "Hyphema Analysis" section.
+                        radioContainer.innerHTML = injuries
+                            .map(
+                                injury => `
+                                <div>
+                                    <input type="radio" id="injury-${injury.id}" name="injury" value="${injury.id}">
+                                    <label for="injury-${injury.id}">${injury.diagnosis}</label>
+                                </div>
+                            `
+                            )
+                            .join('');
+                    } else {
+                        const noInjuriesMessage = '<p>Keine Diagnosen gefunden</p>';
+                        injuryList.innerHTML = '<li>Keine Diagnosen gefunden</li>';
+                        radioContainer.innerHTML = noInjuriesMessage;
+                    }
+                } else if (response.status === 204) {
+                    const noInjuriesMessage = '<p>Keine Diagnosen gefunden</p>';
+                    injuryList.innerHTML = '<li>Keine Diagnosen gefunden</li>';
+                    radioContainer.innerHTML = noInjuriesMessage;
+                } else {
+                    const errorMessage = '<p>Fehler beim Abrufen der Diagnosen</p>';
+                    injuryList.innerHTML = '<li>Fehler beim Abrufen der Diagnosen</li>';
+                    radioContainer.innerHTML = errorMessage;
+                }
+            } catch (error) {
+                console.error('Fehler beim Abrufen der Diagnosen:', error);
+                const errorMessage = '<p>Fehler beim Abrufen der Diagnosen</p>';
+                injuryList.innerHTML = '<li>Fehler beim Abrufen der Diagnosen</li>';
+                radioContainer.innerHTML = errorMessage;
+            }
+        }
+    </script>
+
+    <script>
+        // Function to add a new injury record
+        async function addInjury() {
+            const diagnosis = document.getElementById('injury-diagnosis').value;
+            const statusMessage = document.getElementById('add-injury-status');
+
+            // Validation: Ensure the input field is not empty
+            if (!diagnosis.trim()) {
+                statusMessage.textContent = 'Die Diagnose darf nicht leer sein!';
+                return;
+            }
+
+            statusMessage.textContent = 'Wird hinzugefügt...';
+
+            try {
+                // API call to add a new injury
+                const response = await fetch(`/api/${patientId}/injuries`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ diagnosis: diagnosis }), // Send data as a JSON object
+                });
+
+                if (response.ok) {
+                    const newInjury = await response.json();
+                    statusMessage.style.color = 'green';
+                    statusMessage.textContent = 'Diagnose erfolgreich hinzugefügt!';
+
+                    // Refresh the list of injuries
+                    fetchInjuries();
+                } else {
+                    statusMessage.style.color = 'red';
+                    statusMessage.textContent = 'Fehler beim Hinzufügen der Diagnose!';
+                }
+            } catch (error) {
+                console.error('Fehler beim Hinzufügen der Diagnose:', error);
+                statusMessage.style.color = 'red';
+                statusMessage.textContent = 'Netzwerkfehler oder Serverfehler!';
+            }
+
+            // Clear the input field
+            document.getElementById('injury-diagnosis').value = '';
+        }
+
+    </script>
+
+
+    <script>
+        // Function to start the analysis
+        async function startAnalysis() {
+            const selectedInjury = document.querySelector('input[name="injury"]:checked');
+            const selectedEye = document.querySelector('input[name="eye"]:checked');
+            const date = document.getElementById('analysis-date').value;
+            const photo = document.getElementById('upload-photo').files[0];
+            const statusMessage = document.getElementById('upload-status');
+            const loadingBar = document.getElementById('loading-bar');
+            const resultImage = document.getElementById('processed-image');
+
+            // Validation: Ensure all required inputs are provided
+            if (!selectedInjury || !selectedEye || !date || !photo) {
+                statusMessage.textContent = 'Alle Felder müssen ausgefüllt werden!';
+                return;
+            }
+
+            // Start the analysis
+            statusMessage.textContent = '';
+            loadingBar.style.display = 'block';
+
+            const formData = new FormData();
+            formData.append('photo', photo);
+            formData.append('injuryId', selectedInjury.value);
+            formData.append('eye', selectedEye.value);
+            formData.append('date', date);
+
+            try {
+                // Send the analysis request
+                const response = await fetch(`/api/${patientId}/runAnalyseHyphema`, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+
+                    // Avoid caching by adding a timestamp query parameter
+                    const timestamp = new Date().getTime(); // Aktueller Zeitstempel
+                    resultImage.src = `${data.processedImage}?t=${timestamp}`; // Image URL + query parameter
+
+                    resultImage.style.display = 'block';
+                    resultImage.setAttribute('data-hyphema-percentage', data.percentageOfEyeAffectedByHyphema);
+                    document.getElementById('save-result').style.display = 'block';
+                } else {
+                    statusMessage.textContent = 'Fehler beim Starten der Analyse!';
+                }
+            } catch (error) {
+                statusMessage.textContent = 'Netzwerkfehler!';
+            } finally {
+                loadingBar.style.display = 'none';
+            }
+        }
+
+        // Function to save the analysis result
+        async function saveResult() {
+            const selectedInjury = document.querySelector('input[name="injury"]:checked');
+            const selectedEye = document.querySelector('input[name="eye"]:checked');
+            const date = document.getElementById('analysis-date').value;
+
+            const percentageOfEyeAffectedByHyphema = document.getElementById('processed-image').getAttribute('data-hyphema-percentage');
+
+            // Validation: Ensure all required fields and analysis results are present
+            if (!selectedInjury || !selectedEye || !date || !percentageOfEyeAffectedByHyphema) {
+                alert('Alle Felder müssen ausgefüllt sein, inklusive Analyseergebnis!');
+                return;
+            }
+
+            // API request to save the result
+            const response = await fetch(`/api/${patientId}/saveResult`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    injuryId: selectedInjury.value,
+                    eye: selectedEye.value,
+                    date: date,
+                    percentageOfEyeAffectedByHyphema: percentageOfEyeAffectedByHyphema
+                })
+            });
+
+            if (response.ok) {
+                alert('Ergebnis erfolgreich gespeichert!');
+            } else {
+                alert('Fehler beim Speichern des Ergebnisses!');
+            }
+        }
+    </script>
+
+    <script>
+        // Function to load and display results
+        async function loadResults() {
+            const selectedDiagnosis = document.querySelector('input[name="injury-results"]:checked');
+            const selectedEye = document.querySelector('input[name="eye-results"]:checked');
+            
+            if (!selectedDiagnosis || !selectedEye) {
+                alert('Bitte wählen Sie eine Diagnose und ein Auge aus.');
+                return;
+            }
+
+            const injuryId = selectedDiagnosis.value;
+            const eyeSide = selectedEye.value;
+
+            try {
+                // Fetch the analysis results
+                const response = await fetch(`/api/patients/${patientId}/injuries/${injuryId}/eyes/${eyeSide}`);
+
+                if (response.ok) {
+                    const results = await response.json(); 
+
+                    console.log(results);
+
+                    if (results.length === 0) {
+                        alert('Keine Daten verfügbar.');
+                        return;
+                    }
+
+                    const dates = results.map(result => result.date);
+                    const percentages = results.map(result => result.percentageOfEyeAffectedByHyphema);
+
+                    createChart(dates, percentages);
+                } else {
+                    alert('Fehler beim Laden der Ergebnisse.');
+                }
+            } catch (error) {
+                console.error('Fehler beim Abrufen der Ergebnisse:', error);
+                alert('Netzwerkfehler.');
+            }
+        }
+
+        // Function to create a chart with Chart.js
+        function createChart(dates, percentages) {
+            const ctx = document.getElementById('results-chart').getContext('2d');
+
+            // Destroy existing chart if it already exists
+            if (window.resultsChart) {
+                window.resultsChart.destroy();
+            }
+
+            // Create a new chart
+            window.resultsChart = new Chart(ctx, {
+                type: 'line', // Line chart
+                data: {
+                    labels: dates, // X-axis: Dates
+                    datasets: [
+                        {
+                            label: 'Hyphema-Beeinträchtigung (%)',
+                            data: percentages, // Y-axis: Percentages
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            borderWidth: 2,
+                            fill: true,
+                            tension: 0.3 
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false, 
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top'
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.parsed.y + '%';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Datum'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Prozent (%)'
+                            },
+                            min: 0,
+                            max: 100
+                        }
+                    }
+                }
+            });
+        }
+
+    </script>
+
+</body>
+</html>

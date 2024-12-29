@@ -1,0 +1,318 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+}
+
+.header .header-left .site-title {
+    font-size: 20px;
+    color: white;
+    text-decoration: none;
+}
+
+.header .header-right button {
+    background-color: white;
+    color: #4CAF50;
+    border: none;
+    padding: 8px 15px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.header .header-right form button {
+    background-color: white;
+    color: #4CAF50;
+    border: none;
+    padding: 8px 15px;
+    cursor: pointer;
+}
+
+.nav {
+    background-color: #f1f1f1;
+    padding: 10px;
+}
+
+.nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.nav ul li {
+    margin-right: 10px;
+}
+
+.nav ul li a {
+    text-decoration: none;
+    color: #4CAF50;
+    padding: 5px 10px;
+    border: 1px solid #4CAF50;
+    border-radius: 3px;
+}
+
+.nav ul li a:hover {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.content {
+    padding: 20px;
+}
+
+.form-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    border-radius: 8px;
+}
+
+#injury-list {
+    margin-top: 10px;
+    padding: 0;
+    list-style: none;
+}
+
+#injury-list li {
+    padding: 5px;
+    border-bottom: 1px solid #ddd;
+}
+
+
+
+textarea {
+    width: 100%;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+#add-injury-status {
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+
+
+/* Accordion Header */
+.accordion-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    cursor: pointer;
+    background-color: #f1f1f1;
+    border: 1px solid #ccc;
+    margin-bottom: 5px;
+    transition: background-color 0.3s ease;
+}
+
+/* Animation */
+.accordion-header .accordion-arrow {
+    font-weight: bold;
+    font-size: 1.2em;
+    transition: transform 0.3s ease; /* Smooth Rotation */
+}
+
+/* Accordion Content */
+.accordion-content {
+    display: none; 
+    padding: 10px 15px;
+    border: 1px solid #ccc;
+    border-top: none;
+    background-color: #fff;
+}
+
+.accordion-content.active {
+    display: block;
+}
+
+.accordion-header.active {
+    background-color: #e0e0e0;
+    border-bottom: 1px solid #ccc;
+}
+
+.accordion-header.active .accordion-arrow {
+    transform: rotate(180deg); 
+}
+
+
+
+/* Basic Styling */
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+}
+
+.content {
+    margin: 20px auto;
+    padding: 20px;
+    background: none; 
+    border: none; 
+    box-shadow: none; 
+}
+
+/* Accordion Styling */
+.accordion {
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.accordion-header {
+    background-color: #f0f0f0; 
+    color: #000000; 
+    padding: 10px 15px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+    transition: background-color 0.3s ease; 
+}
+
+.accordion-header:hover {
+    background-color: #e0e0e0; 
+}
+
+.accordion-header.active {
+    background-color: rgba(144, 238, 144, 0.5); 
+}
+
+.accordion-content {
+    display: none;
+    padding: 15px;
+    border-top: 1px solid #ccc;
+    background-color: #f7f7f7;
+}
+
+.accordion-content.active {
+    display: block;
+}
+
+.accordion-header.active .accordion-arrow {
+    transform: rotate(180deg);
+}
+
+#radio-injuries div {
+    margin-bottom: 10px;
+}
+
+input[type="radio"] {
+    margin-right: 10px;
+}
+
+label {
+    font-weight: normal;
+    cursor: pointer;
+}
+
+/* Styling of the date picker */
+input[type="date"] {
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+/* File-Upload Styling */
+input[type="file"] {
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+/* Loading bar styling */
+#loading-bar {
+    margin-top: 15px;
+    padding: 10px;
+    background-color: #f0ad4e;
+    color: #ffffff;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 4px;
+    animation: loading-animation 1s infinite;
+}
+
+@keyframes loading-animation {
+    0% { background-color: #f0ad4e; }
+    50% { background-color: #ffc107; }
+    100% { background-color: #f0ad4e; }
+}
+
+/* Result Styling */
+#result {
+    margin-top: 20px;
+    text-align: center;
+}
+
+#processed-image {
+    max-width: 100%;
+    height: auto;
+    border: 2px solid #007bff;
+    border-radius: 8px;
+}
+
+/* Buttons */
+
+.button-container {
+    margin-top: 20px; 
+    display: flex;
+    gap: 10px; 
+    justify-content: center; 
+}
+
+button {
+    padding: 10px 20px;
+    border: none;
+    background-color: #4CAF50;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+
+
+
+
