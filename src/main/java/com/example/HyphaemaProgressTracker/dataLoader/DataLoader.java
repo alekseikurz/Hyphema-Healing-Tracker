@@ -72,34 +72,6 @@ public class DataLoader implements CommandLineRunner {
      */
     @Override
     public void run(String... args) {
-        // Patienten, Verletzungen und Augenverletzungen erstellen und speichern
-        Patient patient1 = new Patient();
-        patient1.setLogin("login1");
-        patient1.setPassword(passwordEncoder.encode("password1"));
-        patientRepository.save(patient1);
-        
-        Patient patient2 = new Patient();
-        patient2.setLogin("login2");
-        patient2.setPassword(passwordEncoder.encode("password2"));
-        patientRepository.save(patient2);
-
-        Injury injury1 = new Injury();
-        injury1.setDiagnosis("LA Contusio bulbi mit Hyphäma und Tensioerhöhung");
-        injury1.setPatient(patient1);
-        injuryRepository.save(injury1);
-
-        Eye eye1 = new Eye();
-        eye1.setDate(LocalDate.parse("2024-12-06"));
-        eye1.setSide(EyeSide.LEFT);
-        eye1.setInjury(injury1);
-        eye1.setPercentageOfEyeAffectedByHyphema(15);
-        eyeRepository.save(eye1);
-
-        Eye eye2 = new Eye();
-		eye2.setDate(LocalDate.parse("2024-12-10"));
-		eye2.setSide(EyeSide.LEFT);
-		eye2.setInjury(injury1);
-        eye2.setPercentageOfEyeAffectedByHyphema(12);
-        eyeRepository.save(eye2);
+       
     }
 }

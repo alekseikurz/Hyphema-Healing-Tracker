@@ -35,3 +35,7 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### OpenCV ###
+src/main/resources/analyze_hyphema.py
+
