@@ -165,7 +165,6 @@ public class Controller {
      */
     @GetMapping("/getAllPatients")
     public ResponseEntity<List<Patient>> getAllPatients() {
-        System.out.println("- - - - ALL PATIENTS:");
         Iterable<Patient> iterableAllPatients = patientRepository.findAll();
         List<Patient> allPatients = new ArrayList<>();
         iterableAllPatients.forEach(allPatients::add);

@@ -39,3 +39,7 @@ out/
 ### OpenCV ###
 src/main/resources/analyze_hyphema.py
 
+### Pics ###
+*.jpg
+*.JPG
+!src/main/resources/static/illustrations/startPic.JPG

@@ -62,7 +62,7 @@ public class HomeController {
 
     private final PatientRepository patientRepository;
     private final BCryptPasswordEncoder passwordEncoder;
-    private final PatientService patientService; // PatientService wird injiziert
+    private final PatientService patientService; 
 
     /**
      * Constructs a new {@code HomeController} with required dependencies.

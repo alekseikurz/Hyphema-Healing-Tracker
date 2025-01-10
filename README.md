@@ -14,6 +14,11 @@ Regular monitoring of the healing process is crucial to prevent complications an
 
 This platform simplifies the monitoring process by allowing users to track their condition visually and quantitatively.
 
+[YouTube: Hyphema-Fortschrittsverfolgung](https://youtu.be/kzff1G2RwSs?si=9UMwdwIYGjTnjkQf)
+
+![pic](src/main/resources/static/illustrations/startPic.JPG)
+<img src="src/main/resources/static/illustrations/startPic.JPG" alt="Startbild" width="500"/>
+
 ---
 
 ## Key Features
@@ -45,7 +50,7 @@ This platform simplifies the monitoring process by allowing users to track their
 
 ### Backend
 - **Java Spring Boot**  
-  - REST API for managing data and connecting the frontend with the backend logic.  
+  - **REST API** for managing data and connecting the frontend with the backend logic.  
   - **Spring Security**: Used for user authentication and authorization.  
   - **Spring Data JPA**: To interact with the PostgreSQL database.  
   - **PostgreSQL**: For storing user data, diagnoses, and analysis results.  
@@ -54,7 +59,8 @@ This platform simplifies the monitoring process by allowing users to track their
 ### Image Processing
 - **Python (OpenCV)**  
   - Used for analyzing uploaded photos to calculate the percentage of Hyphema coverage.  
-  - The backend integrates with Python scripts via the `ProcessBuilder` in Java.  
+  - The backend integrates with Python scripts via the `ProcessBuilder` in Java.
+  - *Image Processing (implementation) is not available for public viewing.  
 
 ### Frontend
 - **HTML/CSS, JavaScript**: For the user interface.  
