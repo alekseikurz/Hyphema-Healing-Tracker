@@ -16,7 +16,6 @@ This platform simplifies the monitoring process by allowing users to track their
 
 [YouTube: Hyphema-Fortschrittsverfolgung](https://youtu.be/kzff1G2RwSs?si=9UMwdwIYGjTnjkQf)
 
-![pic](src/main/resources/static/illustrations/startPic.JPG)
 <img src="src/main/resources/static/illustrations/startPic.JPG" alt="Startbild" width="500"/>
 
 ---
